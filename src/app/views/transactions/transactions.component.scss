@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use './../../../scss/settings/settings' as settings;
+
+.transaction {
+  &__header {
+    background-color: map-get(settings.$colours, 'default');
+    padding-top: settings.$spacing * 1.5;
+    padding-bottom: settings.$spacing * 0.75;
+  }
+
+  &__logo {
+    width: settings.$spacing * 15;
+  }
+}

@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use './../../../scss/settings/settings' as settings;
+
+.banner {
+  height: 100vh;
+  background: map.get(settings.$colours, 'primary');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__background {
+    position: fixed;
+  }
+
+  &__content {
+    z-index: 1;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 3.3vw;
+    font-weight: 700;
+    color: map.get(settings.$colours, 'onPrimary');
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  &__subtitle {
+    font-size: 1.8vw;
+    color: map.get(settings.$colours, 'onPrimary');
+  }
+}

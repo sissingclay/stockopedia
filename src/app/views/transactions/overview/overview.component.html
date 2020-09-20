@@ -1,0 +1,118 @@
+<!-- TODO
+Format date 
+Mute empty security and add text n/a
+Mute empty shares and add text n/a
+-->
+
+<a routerLink="/transactions/add" class="btn btn-primary">Add transaction</a>
+
+<div class="card my-4">
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Date</th>
+          <th scope="col">Type</th>
+          <th scope="col">Security</th>
+          <th scope="col" class="text-right">Shares</th>
+          <th scope="col" class="text-right">Value</th>
+          <th scope="col" class="text-right">Cashflow</th>
+          <th scope="col" class="text-right">&nbsp;</th>
+          <th scope="col" class="text-right">&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="
+            let transaction of (transaction.transactionsData | async)
+              ?.transactions;
+            trackBy: transactionID
+          "
+        >
+          <th scope="row" [innerHtml]="transaction.id"></th>
+          <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ transaction.type | titlecase }}</td>
+          <td>
+            <span [class.text-muted]="!transaction.security">
+              {{
+                transaction.security
+                  ? (transaction.security | titlecase)
+                  : 'n/a'
+              }}
+            </span>
+          </td>
+          <td class="text-right">
+            <span [class.text-muted]="!transaction.shares">
+              {{ transaction.shares ? transaction.shares : 'n/a' }}
+            </span>
+          </td>
+          <td class="text-right">
+            {{ transaction.value | currency: 'GBP' }}
+          </td>
+          <td
+            class="text-right"
+            [class.text-success]="transaction.cashflow > 0"
+            [class.text-danger]="transaction.cashflow < 0"
+          >
+            {{ transaction.cashflow > 0 ? '+' : '-' }}
+            {{ transaction.value | currency: 'GBP' }}
+          </td>
+          <td class="text-right">
+            <a
+              class="text-primary"
+              [routerLink]="['/transactions/edit/', transaction.id]"
+              >Edit</a
+            >
+          </td>
+          <td class="text-right">
+            <a
+              class="text-secondary"
+              href=""
+              (click)="
+                openModal(template, transaction); $event.preventDefault()
+              "
+              >Delete</a
+            >
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6">Cumulative cashflow</td>
+          <td class="text-right">
+            {{ transaction.cumulative | currency: 'GBP' }}
+          </td>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Are you sure you want to delete</h4>
+
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li *ngFor="let item of deleteItem | keyvalue">
+        {{ item.key }}: <b>{{ item.value }}</b>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-light" (click)="modalRef.hide()">Cancel</button>
+    <button class="btn btn-danger" (click)="deleteRecord()">Delete</button>
+  </div>
+</ng-template>

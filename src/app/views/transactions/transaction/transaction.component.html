@@ -1,0 +1,74 @@
+<a routerLink="/transactions" class="btn btn-light"
+  >Back to transaction listings</a
+>
+<div class="card mt-4">
+  <div class="card-body" *ngIf="!isLoading">
+    <h3>{{ stateLabel }} transaction</h3>
+    <form
+      [formGroup]="transactionForm"
+      class="mb-4 pb-2"
+      (submit)="processTransaction()"
+    >
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          formControlName="date"
+          [attr.min]="today"
+        />
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" class="form-control" formControlName="type">
+          <option disabled>Please select...</option>
+          <option *ngFor="let transType of transactionType" [value]="transType">
+            {{ transType }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="security">Security</label>
+        <input
+          type="text"
+          class="form-control"
+          id="security"
+          formControlName="security"
+        />
+      </div>
+      <div class="form-group">
+        <label for="shares">Shares</label>
+        <input
+          type="number"
+          class="form-control"
+          id="shares"
+          formControlName="shares"
+        />
+      </div>
+      <div class="form-group">
+        <label for="value">Value</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">&pound;</span>
+          </div>
+          <input
+            type="number"
+            class="form-control"
+            id="value"
+            formControlName="value"
+          />
+        </div>
+      </div>
+
+      <a routerLink="/transactions" class="btn btn-light mr-2"> Back </a>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="transactionForm.pristine"
+      >
+        {{ stateLabel }} transaction
+      </button>
+    </form>
+  </div>
+</div>
